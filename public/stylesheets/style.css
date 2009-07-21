@@ -1,0 +1,154 @@
+/* @override 
+	http://localhost:3000/stylesheets/style.css?1213912158
+	http://localhost:3000/stylesheets/style.css?1214066830
+	http://localhost:3000/stylesheets/style.css?1214071679
+	http://localhost:3000/stylesheets/style.css?1214357062
+	http://localhost:3000/stylesheets/style.css?1215574191
+*/
+
+body {
+	font: 1em Verdana, "Lucida Grande", Lucida, sans-serif;
+}
+
+#footer {
+	height: 60px;
+	clear: left;
+}
+
+h2 {
+	color: #84400e;
+	font-weight: bold;
+	font-size: 1.4em;
+}
+
+body h2 {
+	text-align: center;
+	margin-top: 12px;
+	margin-bottom: 18px;
+}
+
+h3 {
+	font-size: 1.2em;
+	font-weight: bold;
+	color: #003f7d;
+}
+
+#content {
+	width: 960px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#options {
+	margin-bottom: 12px;
+	background-color: #c5ad95;
+	padding: 6px;
+	font-size: .9em;
+	text-align: left;
+}
+
+/* @group Graphs */
+
+.graph_group {
+	margin-top: 2px;	
+	margin-bottom: 22px;
+	border: 2px solid #c5ad95;
+	background-color: #f8f8d8;
+	padding: 4px;
+}
+
+.graph_group h2 {
+	margin-top: 0px;
+	margin-right: 0px;
+}
+
+.graph_large {
+	margin-bottom: 6px;
+	text-align: center;
+	border: 1px solid #dede98;
+}
+
+.graph_large h3 {
+	margin-top: 4px;
+	font-size: 1.1em;
+}
+.graph_small {
+	display: inline-block;
+	width: 49.5%;
+	border: 1px solid #dede98;
+	text-align: center;
+}
+
+.graph_small h3 {
+	margin-top: 3px;
+	font-size: .8em;
+}
+
+/* @end */
+
+/* @group Stats Table */
+
+#stats_table h3 {
+	margin-bottom: 12px;
+}
+
+#stats_table {
+	font-size: .8em;
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 800px;
+}
+
+#label_column ul {
+	width: 200px;
+	float: left;
+	color: #84400e;
+	display: inline-block;
+}
+
+#data_column ul {
+	display: inline-block;
+	float: left;
+	color: #333;
+	width: 320px;
+}
+
+li.header {
+	border-bottom: 1px solid #84400e;
+	font-weight: bold;
+	margin-bottom: 6px;
+	padding-bottom: 2px;
+}
+
+/* @end */
+
+/* @group Home Page */
+
+#sidebar_right {
+	width: 160px;
+	margin-left: 40px;
+	float: right;
+}
+
+#home_links li a {
+	font-weight: bold;
+	text-decoration: none;
+	border-bottom: 1px dotted blue;
+}
+
+#home_links p {
+	font-size: .8em;
+	color: #535353;
+	margin-left: 20px;
+	margin-top: 3px;
+}
+
+#home_links li {
+	margin-bottom: 22px;
+}
+
+
+/* @end */
+
+

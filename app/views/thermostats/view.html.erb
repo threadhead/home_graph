@@ -1,0 +1,10 @@
+<%= collection_select(:thermo, :thermo_loc,
+		Thermo.find(:all, :group => 'thermo_loc', :order => 'thermo_loc ASC'),
+	 	:thermo_loc,
+		:thermo_loc )
+ %>
+<%= observe_field :thermo_thermo_loc, :url => { :controller => 'zone_graphs', :action => 'ac_last_two_days' } %>
+
+<div id="ac_by_days">
+	<%= @ac_last_two_days %>
+</div>

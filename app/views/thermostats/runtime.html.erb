@@ -1,0 +1,70 @@
+<%= link_to "Home", :controller => 'pages', :action => 'welcome' %>
+<h2>Smith House - HVAC Operations and Statistics</h2>
+
+<div id="options">
+	<h3>Select limits to analyze</h3>
+	<p>&nbsp;</p>
+	<% form_tag url_for(:controller => 'thermostats', :action => 'runtime'), :id => 'select_hour' do -%>
+		<p>For the Past: <%= select_tag( :from_past,
+						options_for_select(['1 hour','4 hours', '12 hours', '24 hours', '48 hours','72 hours'],
+											params[:from_past] )) %>
+		   &nbsp;
+		   Mode: <%= select_tag( :mode, options_for_select(['Cool','Heat'], params[:mode] )) %></p>
+	<%- end -%>
+
+	<%= observe_field :from_past,
+					  :function => "$('select_hour').submit();" %>
+	<%= observe_field :mode,
+					  :function => "$('select_hour').submit();" %>
+</div>
+
+<%- Thermo.locations.each_with_index do |thermo_loc, idx| -%>
+	<div class="graph_group">
+		<h2><%= thermo_loc.capitalize %> Thermostat Usage</h2>
+		<%= render :partial => 'thermo_graph',
+				   :locals => {:thermo_loc => thermo_loc, :from_past => params[:from_past], :mode => params[:mode] } %>
+		<%= render :partial => 'days_graph',
+				   :locals => {:thermo_loc => thermo_loc, :mode => params[:mode] } %>
+		<%= render :partial => 'hours_graph',
+				   :locals => {:thermo_loc => thermo_loc, :mode => params[:mode] } %>
+		<%= render :partial => 'month_runtime_graph',
+				   :locals => {:thermo_loc => thermo_loc, :mode => params[:mode] } %>
+		<%= render :partial => 'month_count_graph',
+				   :locals => {:thermo_loc => thermo_loc, :mode => params[:mode] } %>
+	</div>	
+<%- end %>
+
+<div id="stats_table">
+	<h3>Runtime Statistics, Last <%= params[:from_past] %>, <%= params[:mode] %>ing</h3>
+	<div id="label_column">
+		<ul>
+			<li class="header">&nbsp;</li>
+
+			<li>Currently Running?</li>
+			<li>Last Time Running</li>
+			<li>Total Runtime</li>
+			<li>Total Times On</li>
+			<li>Average Runtime</li>
+			<li>Longest Runtime</li>
+			<li>Shortest Runtime</li>
+		</ul>
+	</div>
+
+	<%- Thermo.locations.each do |thermo_loc| -%>
+		<% logs = Thermo.from_time( params[:from_past].to_i.hours.ago ).location( thermo_loc ).mode( params[:mode] ).active.find( :all ) %>
+
+		<div id="data_column">
+			<ul>
+				<li class="header"><%= thermo_loc %></li>
+
+				<li><%= Thermo.location_on?( thermo_loc ) ? 'Yes' : 'No' %></li>
+				<li><%= thermo_event_string Thermo.last_time_on( thermo_loc, params[:mode] ) %></li>
+				<li><%= format_float(Thermo.sum_runtime( logs )) %> min</li>
+				<li><%= logs.size %></li>
+				<li><%= format_float(Thermo.average_runtime( logs )) %> min</li>
+				<li><%= thermo_event_string Thermo.longest_runtime( logs ) %></li>
+				<li><%= thermo_event_string Thermo.shortest_runtime( logs ) %></li>
+			</ul>
+		</div>
+	<%- end -%>
+</div>

@@ -1,0 +1,22 @@
+# You will need to configure this to connect to the mysql database that
+# is hosting your elkm1--control logging database
+
+development:
+  adapter: mysql
+  encoding: utf8
+  reconnect: false
+  database: home_graph_development
+  pool: 5
+  username: root
+  password:
+  socket: /tmp/mysql.sock
+
+production:
+  adapter: mysql
+  encoding: utf8
+  reconnect: false
+  database: home_graph_production
+  pool: 5
+  username: root
+  password: 
+  socket: /tmp/mysql.sock

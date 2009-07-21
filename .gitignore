@@ -1,0 +1,10 @@
+log/*.log
+tmp/**/*
+backups/**
+
+# Other useful tidbits
+.DS_Store
+doc/api
+doc/app
+deploy.rb
+database.yml

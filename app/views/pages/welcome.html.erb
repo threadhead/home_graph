@@ -1,0 +1,20 @@
+<h2>Welcome to the Smith House - Automation Statistics Center</h2>
+
+
+<div id="sidebar_right">
+	<%= render :partial => 'layouts/weatherbug_sidebar' %>
+</div>
+
+<div id="home_links">
+<ul>
+	<li>
+		<%= link_to "Thermostat Runtimes and Counts", :controller => 'thermostats', :action => 'runtime' %>
+		<p>Displays several graphs of the runtime (time the system is on) and counts (the number of times the system is on). You can select the time to analyze and the system mode (heating or cooling).</p>
+	</li>
+
+	<li>
+		<%= link_to "Window and Door Openings", :controller => 'zones', :action => 'opened' %>
+		<p>Displays some statistics about the opening and closing of windows and doors as read by the alarm system.</p>
+	</li>
+</ul>
+</div>

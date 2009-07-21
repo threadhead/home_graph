@@ -1,0 +1,4 @@
+<div class="graph_large">
+	<h3 id="chart_title">Runtime Last <%= from_past %></h3>
+	<%= open_flash_chart_object(940, 250, OFC_BASE + "thermostats/runtime_graph?thermo_loc=#{thermo_loc}&from_past=#{from_past}&mode=#{mode}", false, OFC_BASE ) %>
+</div>

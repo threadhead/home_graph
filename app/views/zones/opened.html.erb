@@ -1,0 +1,59 @@
+<%= link_to "Home", :controller => 'pages', :action => 'welcome' %>
+<h2>Smith House - Zone Open/Close and Statistics</h2>
+
+<div id="options">
+	<h3>Select zone (door/window) to analyze</h3>
+	<p>&nbsp;</p>
+	<% form_tag url_for(:controller => 'zones', :action => 'opened'), :id => 'select_hour' do -%>
+		<p>For the Past: <%= select_tag( :from_hours, options_for_hours(params[:from_hours])) %>
+		
+		   For Zone: <%= select_tag( :zone, options_for_select( Zonelog.zones, params[:zone] )) %>
+		</p>
+	<%- end -%>
+
+	<%= observe_field :from_hours,
+					  :function => "$('select_hour').submit();" %>
+					
+	<%= observe_field :zone,
+					  :function => "$('select_hour').submit();" %>
+</div>
+
+<div class="graph_group">
+	<%= render :partial => 'zone_graph', :locals => {:zone => params[:zone], :from_hours => params[:from_hours] } %>
+	<%= render :partial => 'days_graph', :locals => {:zone => params[:zone] } %>
+	<%= render :partial => 'hours_graph', :locals => {:zone => params[:zone] } %>
+	<%= render :partial => 'month_opened_graph', :locals => {:zone => params[:zone] } %>
+	<%= render :partial => 'month_count_graph', :locals => {:zone => params[:zone] } %>
+</div>
+
+
+<div id="stats_table">
+	<h3><%= params[:zone] %> Opened/Closed Statistics, Last <%= params[:from_hours] %></h3>
+	<div id="label_column">
+		<ul>
+			<li class="header">&nbsp;</li>
+
+			<li>Currently Open?</li>
+			<li>Last Time Opened</li>
+			<li>Total Time Open</li>
+			<li>Total Times Opened</li>
+			<li>Average Time Open</li>
+			<li>Longest Time Open</li>
+		</ul>
+	</div>
+
+	<% logs = Zonelog.from_time( params[:from_hours].to_i.hours.ago ).zone( params[:zone] ).closed.find( :all ) %>
+
+	<div id="data_column">
+		<ul>
+			<li class="header"><%= params[:zone] %></li>
+
+			<li><%= Zonelog.open?( params[:zone] ) ? 'Yes' : 'No' %></li>
+			<li><%= zonelog_event_string Zonelog.last_time_open( params[:zone] ) %></li>
+			<li><%= seconds_minutes Zonelog.sum_opened( logs ) %></li>
+			<li><%= logs.size %></li>
+			<li><%= seconds_minutes Zonelog.average_opened( logs ) %></li>
+			<li><%= zonelog_event_string Zonelog.longest_opened( logs ) %></li>
+		</ul>
+	</div>
+</div>
