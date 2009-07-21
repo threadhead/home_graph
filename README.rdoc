@@ -1,0 +1,77 @@
+= HomeGraph Rails Application for ElkM1
+
+This graphs data that is collected by thermostats and the {ELKM1 perl script}[https://github.com/threadhead/elkm1--control/tree]. There really is no documentation other than what you read here, but I'll try to layout the files you will need to edit to get things running.
+
+This release provides the following features:
+
+* Simple API.
+
+* Smartly selects ssh method to minimize time.
+
+* Allows the use of custom icons or images.
+
+
+== Download
+
+The latest version of HomeGraph can be found at
+
+* http://github.com/threadhead/home_graph/tree
+
+
+== Requirements
+
+* rails (version >= 2.3)
+
+
+== Installation
+
+Download the the repository into a <tt>home_graph</tt> directory:
+
+  git clone git://github.com/threadhead/home_graph.git
+
+
+
+
+
+== Testing
+
+You can execute the basic library test with a simple <tt>rake test</tt> from the growl-ssh-notifier directory.
+
+There are optional tests that will send growl notifications to either the localhost computer or remote computers.
+
+=== Localhost Notifications
+
+Send test notifications to the localhost machine.
+
+  rake test:local_notification
+
+=== Remote Notifications
+
+You must duplicate the <tt>test/remote_notifications/remote_hosts_example.yml</tt> file to <tt>remote_hosts.yml</tt> and edit the YAML file to enter valid hosts. Then you can test sending notifications to remote hosts.
+
+ rake test:remote_notification
+
+
+== Examples
+
+=== Simple
+
+  require 'growl_ssh_notifier'
+
+  rec = GrowlSSHNotifier::Receiver.new("localhost")
+  rec.send_notification('Test Message', 'This is a test message sent to the LOCALHOST machine with GrowlSSHNotifier.')
+
+=== Notification with Icon
+
+  require 'growl_ssh_notifier'
+  
+  rec = GrowlSSHNotifier::Receiver.new("localhost", { :application_icon => 'Mail' })
+  rec.send_notification('Test Message', 'This is a test message sent to the LOCALHOST machine with GrowlSSHNotifier.')
+
+
+
+== License
+
+This package is licensed under the MIT license and/or the {Creative
+Commons Attribution-ShareAlike}[http://creativecommons.org/licenses/by-sa/2.5/legalcode].
+
