@@ -36,7 +36,7 @@ You will need to set the table names where data is stored. Just edit the constan
 	  TABLE_NAME = "zone_log"
 		...
 
-*Important Note*: In my situation, the _thermo_ table and _zone_log_ table are in separate databases. Therefore you may need to remove the following line from the Zonelog model (line 4):
+<b>Important Note</b>: In my situation, the _thermo_ table and _zone_log_ table are in separate databases. Therefore you may need to remove the following line from the Zonelog model (line 4):
 
 	establish_connection "elkm1_#{RAILS_ENV}"
 
@@ -44,7 +44,7 @@ You will need to set the table names where data is stored. Just edit the constan
 Note: there are other models for _InsideTemp_, _KeypadTemp_, and _OutsideTemp_, but they do nothing at this time. Someday, I'll get around to them.
 
 === Schema
-There is a lot of hard coded sql queries in this project, some may be specific to MySQL. But by using the power of MySQL to group and summarize statistics is much faster than using loops of large ActiveRecord hashes. The downside is that this project probably will not run unless you setup your tables exactly, or at least very similar, to mine. The best I can do is show you the table schema for the Zonelog and Thermo models.
+There is a lot of hard coded sql queries in this project, some may be specific to MySQL. By using the power of MySQL to group and summarize statistics, accumulation is *much* faster than using loops of large ActiveRecord hashes. The downside is that this project probably will not run unless you setup your tables exactly, or at least very similar, to mine. The best I can do is show you the table schema for the Zonelog and Thermo models.
 
 ==== ZoneLog Table Schema
 
@@ -68,6 +68,8 @@ There is a lot of hard coded sql queries in this project, some may be specific t
 	  KEY `zone` (`zone`)
 	) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
+See the following {perl script}[http://gist.github.com/151716] for sample of how to setup a daemon that can monitor an elk-m1 system using the {ELKM1 perl script}[https://github.com/threadhead/elkm1--control/tree].
+
 ==== Thermo Table Schema
 
 	--
@@ -89,8 +91,13 @@ There is a lot of hard coded sql queries in this project, some may be specific t
 	  PRIMARY KEY  (id)
 	) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
+This is pretty convoluted, but to log thermostat data I use Homeseer (version 1.7.X, don't laugh). Homeseer triggers a perl script, that in turn triggers a Ruby script. The ruby script then logs the data. Why all the complexity? Simple, Homeseer and ODBC just are not stable enough, but ruby is. Go figure?
 
+See {this VBscript}[http://gist.github.com/151721] that Homeseer executes whenever a thermostat is turned on and when it is turned off. 
 
+The above VBscript triggers the execution of {this ruby script}[http://gist.github.com/151723] that actually does the logging to MySQL.
+
+I'm sure there is a better way, but this is the only setup that I have found that works _and_ is reliable.
 
 
 == Testing
