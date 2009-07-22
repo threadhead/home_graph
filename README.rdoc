@@ -44,7 +44,7 @@ You will need to set the table names where data is stored. Just edit the constan
 	establish_connection "elkm1_#{RAILS_ENV}"
 
 
-Note: there are other models for _InsideTemp_, _KeypadTemp_, and _OutsideTemp_, but they do nothing at this time. Someday, I'll get around to them.
+There are other models for _InsideTemp_, _KeypadTemp_, and _OutsideTemp_, but they do nothing at this time. Someday, I'll get around to them.
 
 === Schema
 There is a lot of hard coded sql queries in this project, some may be specific to MySQL. By using the power of MySQL to group and summarize statistics, accumulation is *much* faster than using loops of large ActiveRecord hashes. The downside is that this project probably will not run unless you setup your tables exactly, or at least very similar, to mine. The best I can do is show you the table schema for the Zonelog and Thermo models.
@@ -86,13 +86,16 @@ See the following {perl script}[http://gist.github.com/151716] for a sample of h
 	  PRIMARY KEY  (id)
 	) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
-This is pretty convoluted, but to log thermostat data I use Homeseer (version 1.7.X, don't laugh) running in a VM on my linux server. Homeseer triggers a perl script, that in turn triggers a Ruby script. The ruby script then logs the data. Why all the complexity? Simple, Homeseer and ODBC just are not stable enough, but ruby is. Go figure?
+This is pretty convoluted, but to log thermostat data I use Homeseer (version 1.7.X, don't laugh) running in a Win2K VM on my linux server. Homeseer triggers a perl script, that in turn triggers a Ruby script. The ruby script then logs the data. Why all the complexity? Simple, Homeseer and ODBC just are not stable enough, but ruby is. Go figure?
 
 See {this VBscript}[http://gist.github.com/151721] that Homeseer executes whenever a thermostat is turned on and when it is turned off. 
 
 The above VBscript triggers the execution of {this ruby script}[http://gist.github.com/151723] that actually does the logging to MySQL.
 
 I'm sure there is a better way, but this is the only setup that I have found that works _and_ is reliable.
+
+==== Weatherbug Sidebar
+In <i>views/layouts/_weatherbug_sidebar.html.erb</i> partial is the code for the Weatherbug Side bar that appears on the root page. You can change the zipcode information to change the location of weather display, or simple comment out everything.
 
 
 == Testing
