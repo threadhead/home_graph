@@ -2,6 +2,9 @@
 
 This graphs data that is collected by thermostats and the {ELKM1 perl script}[https://github.com/threadhead/elkm1--control/tree]. There really is no documentation other than what you read here, but I'll try to layout the files you will need to edit to get things running.
 
+I apologize up-front that this project is so specific to my setup. It was never intended for others to use, and I'm not sure it's worth the effort to abstract everything for other configurations. <i>It just may not be for the faint-of-heart to setup and get running</i>.
+
+
 This release provides the following features:
 
 * Displays tidy little graphs of your thermostats, and elk m1 zones.
@@ -51,10 +54,6 @@ There is a lot of hard coded sql queries in this project, some may be specific t
 	--
 	-- Database: `elkm1`
 	--
-
-	-- --------------------------------------------------------
-
-	--
 	-- Table structure for table `zone_log`
 	--
 
@@ -68,16 +67,12 @@ There is a lot of hard coded sql queries in this project, some may be specific t
 	  KEY `zone` (`zone`)
 	) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
-See the following {perl script}[http://gist.github.com/151716] for sample of how to setup a daemon that can monitor an elk-m1 system using the {ELKM1 perl script}[https://github.com/threadhead/elkm1--control/tree].
+See the following {perl script}[http://gist.github.com/151716] for a sample of how to setup a daemon that can monitor an elk-m1 system using the {ELKM1 perl script}[https://github.com/threadhead/elkm1--control/tree] and log every zone change to MySQL.
 
 ==== Thermo Table Schema
 
 	--
 	-- Database: 'homeseer'
-	--
-
-	-- --------------------------------------------------------
-
 	--
 	-- Table structure for table 'thermo'
 	--
@@ -91,7 +86,7 @@ See the following {perl script}[http://gist.github.com/151716] for sample of how
 	  PRIMARY KEY  (id)
 	) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
-This is pretty convoluted, but to log thermostat data I use Homeseer (version 1.7.X, don't laugh). Homeseer triggers a perl script, that in turn triggers a Ruby script. The ruby script then logs the data. Why all the complexity? Simple, Homeseer and ODBC just are not stable enough, but ruby is. Go figure?
+This is pretty convoluted, but to log thermostat data I use Homeseer (version 1.7.X, don't laugh) running in a VM on my linux server. Homeseer triggers a perl script, that in turn triggers a Ruby script. The ruby script then logs the data. Why all the complexity? Simple, Homeseer and ODBC just are not stable enough, but ruby is. Go figure?
 
 See {this VBscript}[http://gist.github.com/151721] that Homeseer executes whenever a thermostat is turned on and when it is turned off. 
 
