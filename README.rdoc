@@ -4,18 +4,9 @@ This graphs data that is collected by thermostats and the {ELKM1 perl script}[ht
 
 This release provides the following features:
 
-* Simple API.
+* Displays tidy little graphs of your thermostats, and elk m1 zones.
 
-* Smartly selects ssh method to minimize time.
-
-* Allows the use of custom icons or images.
-
-
-== Download
-
-The latest version of HomeGraph can be found at
-
-* http://github.com/threadhead/home_graph/tree
+* uses Open Flash Chart (version 1) for graphs. Will be upgrading to OFC2 soon.
 
 
 == Requirements
@@ -30,44 +21,81 @@ Download the the repository into a <tt>home_graph</tt> directory:
   git clone git://github.com/threadhead/home_graph.git
 
 
+== What You Need to Edit
+=== Database.yml
+You will need to copy the _database.yml.example_ to _database.yml_ and edit for your particular database setup. Because we are just using ActiveRecord to connect to an existing database to simply read and query (no writes), there are no migrations to run and no _schema.rb_.
+
+=== Models
+You will need to set the table names where data is stored. Just edit the constant at the top of the Thermo and Zonelog models.
+
+	class Thermo < ActiveRecord::Base
+	  TABLE_NAME = "thermo"
+		...
+	
+	class Zonelog < ActiveRecord::Base
+	  TABLE_NAME = "zone_log"
+		...
+
+*Important Note*: In my situation, the _thermo_ table and _zone_log_ table are in separate databases. Therefore you may need to remove the following line from the Zonelog model (line 4):
+
+	establish_connection "elkm1_#{RAILS_ENV}"
+
+
+Note: there are other models for _InsideTemp_, _KeypadTemp_, and _OutsideTemp_, but they do nothing at this time. Someday, I'll get around to them.
+
+=== Schema
+There is a lot of hard coded sql queries in this project, some may be specific to MySQL. But by using the power of MySQL to group and summarize statistics is much faster than using loops of large ActiveRecord hashes. The downside is that this project probably will not run unless you setup your tables exactly, or at least very similar, to mine. The best I can do is show you the table schema for the Zonelog and Thermo models.
+
+==== ZoneLog Table Schema
+
+	--
+	-- Database: `elkm1`
+	--
+
+	-- --------------------------------------------------------
+
+	--
+	-- Table structure for table `zone_log`
+	--
+
+	CREATE TABLE `zone_log` (
+	  `id` int(11) NOT NULL auto_increment,
+	  `zone_number` int(11) NOT NULL,
+	  `zone` varchar(30) NOT NULL,
+	  `time_open` datetime default NULL,
+	  `time_close` datetime default NULL,
+	  PRIMARY KEY  (`id`),
+	  KEY `zone` (`zone`)
+	) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
+==== Thermo Table Schema
+
+	--
+	-- Database: 'homeseer'
+	--
+
+	-- --------------------------------------------------------
+
+	--
+	-- Table structure for table 'thermo'
+	--
+
+	CREATE TABLE thermo (
+	  id int(11) NOT NULL auto_increment,
+	  time_on datetime default NULL,
+	  time_off datetime default NULL,
+	  thermo_loc varchar(10) NOT NULL,
+	  `mode` varchar(10) NOT NULL default '',
+	  PRIMARY KEY  (id)
+	) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
+
 
 
 
 == Testing
 
-You can execute the basic library test with a simple <tt>rake test</tt> from the growl-ssh-notifier directory.
-
-There are optional tests that will send growl notifications to either the localhost computer or remote computers.
-
-=== Localhost Notifications
-
-Send test notifications to the localhost machine.
-
-  rake test:local_notification
-
-=== Remote Notifications
-
-You must duplicate the <tt>test/remote_notifications/remote_hosts_example.yml</tt> file to <tt>remote_hosts.yml</tt> and edit the YAML file to enter valid hosts. Then you can test sending notifications to remote hosts.
-
- rake test:remote_notification
-
-
-== Examples
-
-=== Simple
-
-  require 'growl_ssh_notifier'
-
-  rec = GrowlSSHNotifier::Receiver.new("localhost")
-  rec.send_notification('Test Message', 'This is a test message sent to the LOCALHOST machine with GrowlSSHNotifier.')
-
-=== Notification with Icon
-
-  require 'growl_ssh_notifier'
-  
-  rec = GrowlSSHNotifier::Receiver.new("localhost", { :application_icon => 'Mail' })
-  rec.send_notification('Test Message', 'This is a test message sent to the LOCALHOST machine with GrowlSSHNotifier.')
-
+Ain't none.
 
 
 == License
